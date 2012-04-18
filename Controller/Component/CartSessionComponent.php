@@ -4,7 +4,7 @@
  * Cart Session Component
  * Part of the ShoppingCart plugin
  *
- * @author 	Dean Sofer (ProLoser), Jesse Adams (techno-geek)
+ * @author 	Dean Sofer (ProLoser), Jesse Adams (techno-geek), Luboš Remplík
  * @version	0.2
  * @package	CakePHP Shopping Cart Plugin Suite
  * @license http://www.opensource.org/licenses/mit-license.php The MIT License
@@ -12,35 +12,35 @@
  
  class CartSessionComponent extends Component {
 
-	var $components = array('Session');
+	public $components = array('Session');
 	/**
 	 * Used to determine wether or not the table should be used
 	 *
 	 * @var boolean
 	 * @access public
 	 */
-	var $useTable;
+	public $useTable = false;
 	/**
 	 * Default table field for product names
 	 *
 	 * @var string
 	 * @access public
 	 */
-	var $nameField = 'name';
+	public $nameField = 'name';
 	/**
 	 * Default table field for product descriptions
 	 *
 	 * @var string
 	 * @access public
 	 */
-	var $descField = 'description';
+	public $descField = false;
 	/**
 	 * Default table field for product prices
 	 *
 	 * @var string
 	 * @access public
 	 */
-	var $priceField = 'price';
+	public $priceField = 'price';
 	/**
 	 * Default table field for product taxable boolean. Set to false 
 	 * to make all products taxable or if there is no taxable field
@@ -48,21 +48,21 @@
 	 * @var string
 	 * @access public
 	 */
-	var $taxableField = 'taxable';
+	public $taxableField = false;
 	/**
 	 * The tax rate to be applied during calcTotal()
 	 *
 	 * @var decimal
 	 * @access public
 	 */
-	var $taxRate = 0;
+	public $taxRate = 0;
 	/**
 	 * The shipping rate to be applied during calcTotal()
 	 *
 	 * @var decimal
 	 * @access public
 	 */
-	var $shipRate = 0;
+	public $shipRate = 0;
 	/**
 	 * Specifies wether the shipping rate is a flat rate (true) or 
 	 * percentage (false)
@@ -70,39 +70,30 @@
 	 * @var boolean
 	 * @access public
 	 */
-	var $shipFlat = true;
-	
-    /**
-	 * Initializes the component, gets a reference to the controller 
-	 * and stores configuration options.
-	 *
-	 * @param object $controller A reference to the controller
-	 * @param array $options Passed component configuration settings
-	 * @return void
-	 * @access public
-	 */
-	function initialize(&$controller, $options) {
-        // saving the controller reference for later use
-        $this->controller =& $controller;
-		
-		if (isset($options['useTable'])) {
-			$this->useTable = $options['useTable'];
+	public $shipFlat = true;
+
+	public function __construct(ComponentCollection $collection, $settings = array()) {
+		parent::__construct($collection, $settings);
+
+		if (isset($settings['useTable'])) {
+			$this->useTable = $settings['useTable'];
 		} else {
 			$this->useTable = $this->controller->{$this->controller->modelClass}->useTable;
 		}
 		
-		if (isset($options['nameField'])) {
-			$this->nameField = $options['nameField'];
-		} else {
+		if (isset($settings['nameField'])) {
+			$this->nameField = $settings['nameField'];
+		} elseif ($this->useTable) {
 			$this->nameField = $this->controller->{$this->controller->modelClass}->displayField;
 		}
-		if (isset($options['priceField'])) {
-			$this->priceField = $options['priceField'];
+		if (isset($settings['priceField'])) {
+			$this->priceField = $settings['priceField'];
 		}
-		if (isset($options['taxableField'])) {
-			$this->taxableField = $options['taxableField'];
+		if (isset($settings['taxableField'])) {
+			$this->taxableField = $settings['taxableField'];
 		}
-    }
+	}
+	
     //called after Controller::beforeFilter()
     function startup(&$controller) {
     }
@@ -454,4 +445,3 @@
 	}
 	
 }
-?>
