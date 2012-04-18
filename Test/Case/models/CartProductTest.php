@@ -3,7 +3,7 @@
 /* CartProduct Test cases generated on: 2009-07-21 14:07:10 : 1248210310*/
 App::import('Model', 'Cart.CartProduct');
 
-class CartProductTestCase extends CakeTestCase {
+class CartProductTest extends CakeTestCase {
 	var $CartProduct = null;
 	var $fixtures = array('plugin.cart.cart_product');
 

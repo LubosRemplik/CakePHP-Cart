@@ -4,7 +4,7 @@
  *
  * @package Cart Plugin
  **/
-class InstantPaymentNotificationComponent extends Object {
+class InstantPaymentNotificationComponent extends Component {
 	
 	var $config;
 	var $map;
